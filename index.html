@@ -71,12 +71,12 @@ class RadialLayout {
       const isMobile = window.innerWidth <= 768;
       
       if (isMobile) {
-        // On mobile, add a visual indicator and position as blocks
+        // On mobile, create mindmap structure with visual connections
         node.innerHTML = `
-          <div style="display: flex; align-items: center; gap: 12px;">
-            <div style="width: 8px; height: 8px; background: linear-gradient(135deg, #667eea, #764ba2); border-radius: 50%; flex-shrink: 0;"></div>
-            <div style="flex: 1;">${value.title}</div>
-            <div style="font-size: 1.2rem; opacity: 0.6;">→</div>
+          <div class="mindmap-indicator"></div>
+          <div style="display: flex; align-items: center; gap: 15px;">
+            <div style="flex: 1; font-weight: 600;">${value.title}</div>
+            <div style="font-size: 1.3rem; opacity: 0.7; color: #667eea;">→</div>
           </div>
         `;
         node.style.position = 'relative';
