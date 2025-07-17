@@ -5,290 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta http-equiv="X-UA-Compatible" content="ie=edge" />
 <title>Collaboration Values - Interactive Radial View</title>
-<style>
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-html, body {
-  font-family: ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji',
-    'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
-  background: linear-gradient(135deg, #EBEEFA 0%, #764ba2 100%);
-  height: 100vh;
-  width: 100vw;
-  overflow: auto;
-  margin: 0;
-  padding: 0;
-}
-
-#container {
-  position: relative;
-  width: 100vw;
-  height: 100vh;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  overflow: visible;
-}
-
-#center-node {
-  position: absolute;
-  width: 120px;
-  height: 120px;
-  background: radial-gradient(circle, #ffffff 0%, #f8f9fa 100%);
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 2rem;
-  font-weight: bold;
-  color: #333;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.3);
-  cursor: pointer;
-  transition: all 0.3s ease;
-  z-index: 10;
-}
-
-#center-node:hover {
-  transform: scale(1.1);
-  box-shadow: 0 12px 40px rgba(0,0,0,0.4);
-}
-
-.value-node {
-  position: absolute;
-  width: 200px;
-  height: 200px;
-  background: radial-gradient(circle, #ffffff 0%, #f1f3f4 100%);
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: #333;
-  box-shadow: 0 6px 20px rgba(0,0,0,0.2);
-  cursor: pointer;
-  transition: all 0.3s ease;
-  padding: 20px;
-  line-height: 1.4;
-  z-index: 5;
-}
-
-.value-node:hover {
-  transform: scale(1.05);
-  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-  background: radial-gradient(circle, #ffffff 0%, #e8f4fd 100%);
-}
-
-.value-node.active {
-  transform: scale(1.1);
-  box-shadow: 0 15px 40px rgba(0,0,0,0.4);
-  background: radial-gradient(circle, #ffffff 0%, #d4edda 100%);
-}
-
-.expanding-arm {
-  position: absolute;
-  background: rgba(255, 255, 255, 0.95);
-  border-radius: 20px;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.2);
-  backdrop-filter: blur(10px);
-  overflow: visible;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  z-index: 15;
-  transform-origin: center;
-  border: 3px solid #667eea;
-}
-
-.expanding-arm.closed {
-  width: 0;
-  height: 0;
-  opacity: 0;
-}
-
-.expanding-arm.open {
-  width: 350px;
-  min-height: 250px;
-  max-height: none;
-  opacity: 1;
-}
-
-.arm-content {
-  padding: 20px;
-  height: auto;
-  display: flex;
-  flex-direction: column;
-  overflow: visible;
-}
-
-.arm-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 15px;
-  padding-bottom: 10px;
-  border-bottom: 2px solid #e9ecef;
-}
-
-.arm-title {
-  font-size: 1.2rem;
-  font-weight: bold;
-  color: #333;
-}
-
-.close-arm {
-  background: none;
-  border: none;
-  font-size: 1.5rem;
-  cursor: pointer;
-  color: #666;
-  padding: 5px;
-  border-radius: 50%;
-  transition: all 0.2s ease;
-}
-
-.close-arm:hover {
-  background: #f8f9fa;
-  color: #333;
-}
-
-.toggle-buttons {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 15px;
-}
-
-.toggle-btn {
-  flex: 1;
-  padding: 10px 12px;
-  border: 2px solid #e9ecef;
-  background: #ffffff;
-  color: #333;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: 600;
-  transition: all 0.3s ease;
-  font-size: 0.85rem;
-}
-
-.toggle-btn:hover {
-  border-color: #667eea;
-  background: #f8f9ff;
-}
-
-.toggle-btn.active {
-  background: #667eea;
-  color: white;
-  border-color: #667eea;
-}
-
-.content-section {
-  flex: 1;
-  overflow-y: visible;
-  display: none;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-}
-
-.content-section.active {
-  display: block;
-}
-
-.content-section h3 {
-  color: #555;
-  margin-bottom: 12px;
-  font-size: 1rem;
-}
-
-.content-section ul {
-  margin-left: 15px;
-}
-
-.content-section li {
-  margin-bottom: 8px;
-  line-height: 1.5;
-  color: #444;
-  font-size: 0.9rem;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-}
-
-.connection-line {
-  position: absolute;
-  background: rgba(255, 255, 255, 0.6);
-  height: 2px;
-  transform-origin: left center;
-  pointer-events: none;
-  z-index: 1;
-}
-
-.arm-connection {
-  position: absolute;
-  background: linear-gradient(90deg, #667eea, #764ba2);
-  height: 4px;
-  transform-origin: left center;
-  pointer-events: none;
-  z-index: 8;
-  border-radius: 2px;
-}
-
-@media (max-width: 768px) {
-  #container {
-    width: 100vw;
-    height: auto;
-    min-height: 100vh;
-    padding: 20px;
-  }
-  
-  .value-node {
-    width: 120px;
-    height: 120px;
-    font-size: 0.8rem;
-    padding: 10px;
-  }
-  
-  .expanding-arm.open {
-    width: calc(100vw - 40px);
-    min-height: auto;
-    max-height: none;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 20;
-  }
-  
-  .arm-content {
-    padding: 15px;
-  }
-  
-  .toggle-buttons {
-    flex-direction: column;
-    gap: 5px;
-  }
-  
-  .toggle-btn {
-    font-size: 0.8rem;
-    padding: 8px 10px;
-  }
-}
-
-@media (max-width: 480px) {
-  .value-node {
-    width: 100px;
-    height: 100px;
-    font-size: 0.7rem;
-    padding: 8px;
-  }
-  
-  .expanding-arm.open {
-    width: calc(100vw - 20px);
-  }
-}
-</style>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 <div id="container">
@@ -296,110 +13,34 @@ html, body {
 </div>
 
 <script>
-const collaborationValues = [
-  {
-    id: 'method-mission',
-    title: '📋 Method with Mission',
-    position: 0, // 0 degrees
-    dailyWork: [
-      'Working groups align activities with public benefit',
-      'Knowledge sharing serves broader community needs',
-      'Scouting criteria includes mission alignment',
-      'Workshop content connects to organizational purpose'
-    ],
-    skills: [
-      'Project management for mission alignment',
-      'Keep up! for mission-relevant knowledge',
-      'Self-organization supporting purpose',
-      'Values-driven decision making'
-    ]
-  },
-  {
-    id: 'people-org',
-    title: '🤝 People Organization',
-    position: 60, // 60 degrees
-    dailyWork: [
-      'Working groups facilitate with care for individual needs',
-      '1:1 check-ins build relationships beyond task completion',
-      'Project scouting considers team capacity and wellbeing',
-      'Knowledge sharing workshops create connection opportunities'
-    ],
-    skills: [
-      'Constructive Conflict & Disagreement',
-      'Internal Communication',
-      'People\'s Manual sharing sessions',
-      'Feedback culture development'
-    ]
-  },
-  {
-    id: 'work-open',
-    title: '🌐 Work in the Open',
-    position: 120, // 120 degrees
-    dailyWork: [
-      'Working groups share progress openly with transparent documentation',
-      'Knowledge base serves as shared resource for all',
-      'Scouting decisions made together with clear rationale',
-      'Workshop proposals shared for collective input'
-    ],
-    skills: [
-      'Working in the Open methodology',
-      'General writing for transparency',
-      'Collaboration tools for co-creation',
-      'Note-taking as shared memory'
-    ]
-  },
-  {
-    id: 'think-differently',
-    title: '🧠 Everyone Thinks Differently',
-    position: 180, // 180 degrees
-    dailyWork: [
-      'Working groups accommodate different participation styles',
-      'Knowledge sharing workshops vary formats for different learners',
-      'Scouting process includes diverse perspective-gathering',
-      'Workshop design considers multiple learning approaches'
-    ],
-    skills: [
-      'Facilitation skills for inclusion',
-      'Collaboration tools training',
-      'Note-taking skills for accessibility',
-      'Async-first practices supporting autonomy'
-    ]
-  },
-  {
-    id: 'meet-purpose',
-    title: '🎯 Meet with Purpose',
-    position: 240, // 240 degrees
-    dailyWork: [
-      'Working groups have clear objectives and defined outcomes',
-      'Knowledge sharing workshops are structured for effective learning',
-      'Project scouting sessions are purposeful with defined criteria',
-      'Workshop proposals include clear objectives and expected results'
-    ],
-    skills: [
-      'Agenda setting skills',
-      'Facilitation skills for structured engagement',
-      'Meeting alternatives exploration',
-      'Purpose-driven gathering design'
-    ]
-  },
-  {
-    id: 'collaboration',
-    title: '🤲 Collaboration',
-    position: 300, // 300 degrees
-    dailyWork: [
-      'Cross-functional working groups',
-      'Shared decision-making processes',
-      'Collective knowledge building',
-      'Co-creation of organizational practices'
-    ],
-    skills: [
-      'Cross-team communication',
-      'Shared leadership development',
-      'Collaborative problem-solving',
-      'Building trust across boundaries'
-    ]
+let collaborationValues = [];
+let centerContent = {};
+
+// Load data from JSON file
+async function loadData() {
+  try {
+    const response = await fetch('data.json');
+    const data = await response.json();
+    collaborationValues = data.values;
+    centerContent = data.centerContent;
+    
+    // Initialize the radial layout after data is loaded
+    new RadialLayout();
+  } catch (error) {
+    console.error('Error loading data:', error);
+    // Fallback to default data if JSON loading fails
+    collaborationValues = [
+      {
+        id: 'method-mission',
+        title: '📋 Method with Mission',
+        position: 0,
+        dailyWork: ['Working groups align activities with public benefit'],
+        skills: ['Project management for mission alignment']
+      }
+    ];
+    new RadialLayout();
   }
-];
+}
 
 class RadialLayout {
   constructor() {
@@ -509,7 +150,7 @@ class RadialLayout {
       <div class="arm-content">
         <div class="arm-header">
           <div class="arm-title">${value.title}</div>
-          <button class="close-arm" onclick="this.closest('.expanding-arm').remove(); document.getElementById('connection-${value.id}')?.remove(); document.querySelectorAll('.value-node').forEach(n => n.classList.remove('active'));">×</button>
+          <button class="close-arm" onclick="this.closest('.expanding-arm').remove(); document.getElementById('connection-' + '${value.id}')?.remove(); document.querySelectorAll('.value-node').forEach(n => n.classList.remove('active'));">×</button>
         </div>
         
         <div class="toggle-buttons">
@@ -609,6 +250,13 @@ class RadialLayout {
     arm.style.left = `${this.centerX - 175}px`;
     arm.style.top = `${this.centerY - 125}px`;
     
+    const overview = centerContent.overview || {
+      title: 'Collaboration Values Overview',
+      description: 'This interactive visualization shows the core collaboration values.',
+      instructions: 'Click on any value around the circle to explore:',
+      features: ['How each value affects daily work', 'Skills needed to build collaboration']
+    };
+    
     arm.innerHTML = `
       <div class="arm-content">
         <div class="arm-header">
@@ -622,18 +270,16 @@ class RadialLayout {
         </div>
         
         <div class="content-section active" id="overview">
-          <h3>Collaboration Values Overview</h3>
-          <p>This interactive visualization shows the core collaboration values that guide our daily work and skill development.</p>
-          <p>Click on any value around the circle to explore:</p>
+          <h3>${overview.title}</h3>
+          <p>${overview.description}</p>
+          <p>${overview.instructions}</p>
           <ul>
-            <li>How each value affects daily work</li>
-            <li>Skills needed to build collaboration</li>
-            <li>Practical applications in the organization</li>
+            ${overview.features.map(feature => `<li>${feature}</li>`).join('')}
           </ul>
         </div>
         
         <div class="content-section" id="values">
-          <h3>All Collaboration Values</h3>
+          <h3>${centerContent.values?.title || 'All Collaboration Values'}</h3>
           <ul>
             ${collaborationValues.map(v => `<li>${v.title}</li>`).join('')}
           </ul>
@@ -705,10 +351,8 @@ class RadialLayout {
   }
 }
 
-// Initialize the radial layout when the page loads
-document.addEventListener('DOMContentLoaded', () => {
-  new RadialLayout();
-});
+// Load data and initialize when the page loads
+document.addEventListener('DOMContentLoaded', loadData);
 </script>
 </body>
 </html>

@@ -1,0 +1,123 @@
+{
+  "title": "Collaboration Values & Daily Work",
+  "centerNode": "STA",
+  "values": [
+    {
+      "id": "method-mission",
+      "title": "📋 Method with Mission",
+      "position": 0,
+      "dailyWork": [
+        "Working groups align activities with public benefit",
+        "Knowledge sharing serves broader community needs",
+        "Scouting criteria includes mission alignment",
+        "Workshop content connects to organizational purpose"
+      ],
+      "skills": [
+        "Project management for mission alignment",
+        "Keep up! for mission-relevant knowledge",
+        "Self-organization supporting purpose",
+        "Values-driven decision making"
+      ]
+    },
+    {
+      "id": "people-org",
+      "title": "🤝 People Organization",
+      "position": 60,
+      "dailyWork": [
+        "Working groups facilitate with care for individual needs",
+        "1:1 check-ins build relationships beyond task completion",
+        "Project scouting considers team capacity and wellbeing",
+        "Knowledge sharing workshops create connection opportunities"
+      ],
+      "skills": [
+        "Constructive Conflict & Disagreement",
+        "Internal Communication",
+        "People's Manual sharing sessions",
+        "Feedback culture development"
+      ]
+    },
+    {
+      "id": "work-open",
+      "title": "🌐 Work in the Open",
+      "position": 120,
+      "dailyWork": [
+        "Working groups share progress openly with transparent documentation",
+        "Knowledge base serves as shared resource for all",
+        "Scouting decisions made together with clear rationale",
+        "Workshop proposals shared for collective input"
+      ],
+      "skills": [
+        "Working in the Open methodology",
+        "General writing for transparency",
+        "Collaboration tools for co-creation",
+        "Note-taking as shared memory"
+      ]
+    },
+    {
+      "id": "think-differently",
+      "title": "🧠 Everyone Thinks Differently",
+      "position": 180,
+      "dailyWork": [
+        "Working groups accommodate different participation styles",
+        "Knowledge sharing workshops vary formats for different learners",
+        "Scouting process includes diverse perspective-gathering",
+        "Workshop design considers multiple learning approaches"
+      ],
+      "skills": [
+        "Facilitation skills for inclusion",
+        "Collaboration tools training",
+        "Note-taking skills for accessibility",
+        "Async-first practices supporting autonomy"
+      ]
+    },
+    {
+      "id": "meet-purpose",
+      "title": "🎯 Meet with Purpose",
+      "position": 240,
+      "dailyWork": [
+        "Working groups have clear objectives and defined outcomes",
+        "Knowledge sharing workshops are structured for effective learning",
+        "Project scouting sessions are purposeful with defined criteria",
+        "Workshop proposals include clear objectives and expected results"
+      ],
+      "skills": [
+        "Agenda setting skills",
+        "Facilitation skills for structured engagement",
+        "Meeting alternatives exploration",
+        "Purpose-driven gathering design"
+      ]
+    },
+    {
+      "id": "collaboration",
+      "title": "🤲 Collaboration",
+      "position": 300,
+      "dailyWork": [
+        "Cross-functional working groups",
+        "Shared decision-making processes",
+        "Collective knowledge building",
+        "Co-creation of organizational practices"
+      ],
+      "skills": [
+        "Cross-team communication",
+        "Shared leadership development",
+        "Collaborative problem-solving",
+        "Building trust across boundaries"
+      ]
+    }
+  ],
+  "centerContent": {
+    "overview": {
+      "title": "Collaboration Values Overview",
+      "description": "This interactive visualization shows the core collaboration values that guide our daily work and skill development.",
+      "instructions": "Click on any value around the circle to explore:",
+      "features": [
+        "How each value affects daily work",
+        "Skills needed to build collaboration",
+        "Practical applications in the organization"
+      ]
+    },
+    "values": {
+      "title": "All Collaboration Values"
+    }
+  }
+} 
