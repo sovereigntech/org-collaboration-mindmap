@@ -4,30 +4,711 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-<title>Markmap</title>
+<title>Collaboration Values - Interactive Radial View</title>
 <style>
 * {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
-html {
+
+html, body {
   font-family: ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji',
     'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  background: linear-gradient(135deg, #EBEEFA 0%, #764ba2 100%);
+  height: 100vh;
+  width: 100vw;
+  overflow: auto;
+  margin: 0;
+  padding: 0;
 }
-#mindmap {
-  display: block;
+
+#container {
+  position: relative;
   width: 100vw;
   height: 100vh;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: visible;
 }
-.markmap-dark {
-  background: #27272a;
+
+#center-node {
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  background: radial-gradient(circle, #ffffff 0%, #f8f9fa 100%);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+  font-weight: bold;
+  color: #333;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 10;
+}
+
+#center-node:hover {
+  transform: scale(1.1);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.4);
+}
+
+.value-node {
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle, #ffffff 0%, #f1f3f4 100%);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #333;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 20px;
+  line-height: 1.4;
+  z-index: 5;
+}
+
+.value-node:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+  background: radial-gradient(circle, #ffffff 0%, #e8f4fd 100%);
+}
+
+.value-node.active {
+  transform: scale(1.1);
+  box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+  background: radial-gradient(circle, #ffffff 0%, #d4edda 100%);
+}
+
+.expanding-arm {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+  backdrop-filter: blur(10px);
+  overflow: visible;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 15;
+  transform-origin: center;
+  border: 3px solid #667eea;
+}
+
+.expanding-arm.closed {
+  width: 0;
+  height: 0;
+  opacity: 0;
+}
+
+.expanding-arm.open {
+  width: 350px;
+  min-height: 250px;
+  max-height: none;
+  opacity: 1;
+}
+
+.arm-content {
+  padding: 20px;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  overflow: visible;
+}
+
+.arm-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #e9ecef;
+}
+
+.arm-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.close-arm {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #666;
+  padding: 5px;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+}
+
+.close-arm:hover {
+  background: #f8f9fa;
+  color: #333;
+}
+
+.toggle-buttons {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 15px;
+}
+
+.toggle-btn {
+  flex: 1;
+  padding: 10px 12px;
+  border: 2px solid #e9ecef;
+  background: #ffffff;
+  color: #333;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  font-size: 0.85rem;
+}
+
+.toggle-btn:hover {
+  border-color: #667eea;
+  background: #f8f9ff;
+}
+
+.toggle-btn.active {
+  background: #667eea;
   color: white;
+  border-color: #667eea;
+}
+
+.content-section {
+  flex: 1;
+  overflow-y: visible;
+  display: none;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.content-section.active {
+  display: block;
+}
+
+.content-section h3 {
+  color: #555;
+  margin-bottom: 12px;
+  font-size: 1rem;
+}
+
+.content-section ul {
+  margin-left: 15px;
+}
+
+.content-section li {
+  margin-bottom: 8px;
+  line-height: 1.5;
+  color: #444;
+  font-size: 0.9rem;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.connection-line {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.6);
+  height: 2px;
+  transform-origin: left center;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.arm-connection {
+  position: absolute;
+  background: linear-gradient(90deg, #667eea, #764ba2);
+  height: 4px;
+  transform-origin: left center;
+  pointer-events: none;
+  z-index: 8;
+  border-radius: 2px;
+}
+
+@media (max-width: 768px) {
+  #container {
+    width: 100vw;
+    height: auto;
+    min-height: 100vh;
+    padding: 20px;
+  }
+  
+  .value-node {
+    width: 120px;
+    height: 120px;
+    font-size: 0.8rem;
+    padding: 10px;
+  }
+  
+  .expanding-arm.open {
+    width: calc(100vw - 40px);
+    min-height: auto;
+    max-height: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 20;
+  }
+  
+  .arm-content {
+    padding: 15px;
+  }
+  
+  .toggle-buttons {
+    flex-direction: column;
+    gap: 5px;
+  }
+  
+  .toggle-btn {
+    font-size: 0.8rem;
+    padding: 8px 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .value-node {
+    width: 100px;
+    height: 100px;
+    font-size: 0.7rem;
+    padding: 8px;
+  }
+  
+  .expanding-arm.open {
+    width: calc(100vw - 20px);
+  }
 }
 </style>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/markmap-toolbar@0.18.12/dist/style.css">
 </head>
 <body>
-<svg id="mindmap"></svg>
-<script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script><script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18.12/dist/browser/index.js"></script><script src="https://cdn.jsdelivr.net/npm/markmap-toolbar@0.18.12/dist/index.js"></script><script>(()=>{setTimeout(()=>{const{markmap:S,mm:Q}=window,$=new S.Toolbar;$.attach(Q);const I=$.render();I.setAttribute("style","position:absolute;bottom:20px;right:20px"),document.body.append(I)})})()</script><script>((l,U,M,R)=>{const N=l();window.mm=N.Markmap.create("svg#mindmap",(U||N.deriveOptions)(R),M),window.matchMedia("(prefers-color-scheme: dark)").matches&&document.documentElement.classList.add("markmap-dark")})(()=>window.markmap,null,{"content":"Collaboration Values &amp; Daily Work","children":[{"content":"&#x1f4cb; Method with Mission","children":[{"content":"How that affects my daily work?","children":[{"content":"Working groups align activities with public benefit","children":[],"payload":{"tag":"li","lines":"11,12"}},{"content":"Knowledge sharing serves broader community needs","children":[],"payload":{"tag":"li","lines":"12,13"}},{"content":"Scouting criteria includes mission alignment","children":[],"payload":{"tag":"li","lines":"13,14"}},{"content":"Workshop content connects to organizational purpose","children":[],"payload":{"tag":"li","lines":"14,16"}}],"payload":{"tag":"h3","lines":"10,11"}},{"content":"Building Collaboration Skills","children":[{"content":"Project management for mission alignment","children":[],"payload":{"tag":"li","lines":"17,18"}},{"content":"Keep up! for mission-relevant knowledge","children":[],"payload":{"tag":"li","lines":"18,19"}},{"content":"Self-organization supporting purpose","children":[],"payload":{"tag":"li","lines":"19,20"}},{"content":"Values-driven decision making","children":[],"payload":{"tag":"li","lines":"20,22"}}],"payload":{"tag":"h3","lines":"16,17"}}],"payload":{"tag":"h2","lines":"8,9"}},{"content":"&#x1f91d; People Organization","children":[{"content":"How that affects my daily work?","children":[{"content":"Working groups facilitate with care for individual needs","children":[],"payload":{"tag":"li","lines":"25,26"}},{"content":"1:1 check-ins build relationships beyond task completion","children":[],"payload":{"tag":"li","lines":"26,27"}},{"content":"Project scouting considers team capacity and wellbeing","children":[],"payload":{"tag":"li","lines":"27,28"}},{"content":"Knowledge sharing workshops create connection opportunities","children":[],"payload":{"tag":"li","lines":"28,30"}}],"payload":{"tag":"h3","lines":"24,25"}},{"content":"Building Collaboration Skills","children":[{"content":"Constructive Conflict &amp; Disagreement","children":[],"payload":{"tag":"li","lines":"31,32"}},{"content":"Internal Communication","children":[],"payload":{"tag":"li","lines":"32,33"}},{"content":"People&apos;s Manual sharing sessions","children":[],"payload":{"tag":"li","lines":"33,34"}},{"content":"Feedback culture development","children":[],"payload":{"tag":"li","lines":"34,36"}}],"payload":{"tag":"h3","lines":"30,31"}}],"payload":{"tag":"h2","lines":"22,23"}},{"content":"&#x1f310; Work in the Open","children":[{"content":"How that affects my daily work?","children":[{"content":"Working groups share progress openly with transparent documentation","children":[],"payload":{"tag":"li","lines":"39,40"}},{"content":"Knowledge base serves as shared resource for all","children":[],"payload":{"tag":"li","lines":"40,41"}},{"content":"Scouting decisions made together with clear rationale","children":[],"payload":{"tag":"li","lines":"41,42"}},{"content":"Workshop proposals shared for collective input","children":[],"payload":{"tag":"li","lines":"42,44"}}],"payload":{"tag":"h3","lines":"38,39"}},{"content":"Building Collaboration Skills","children":[{"content":"Working in the Open methodology","children":[],"payload":{"tag":"li","lines":"45,46"}},{"content":"General writing for transparency","children":[],"payload":{"tag":"li","lines":"46,47"}},{"content":"Collaboration tools for co-creation","children":[],"payload":{"tag":"li","lines":"47,48"}},{"content":"Note-taking as shared memory","children":[],"payload":{"tag":"li","lines":"48,50"}}],"payload":{"tag":"h3","lines":"44,45"}}],"payload":{"tag":"h2","lines":"36,37"}},{"content":"&#x1f9e0; Everyone Thinks Differently","children":[{"content":"How that affects my daily work?","children":[{"content":"Working groups accommodate different participation styles","children":[],"payload":{"tag":"li","lines":"53,54"}},{"content":"Knowledge sharing workshops vary formats for different learners","children":[],"payload":{"tag":"li","lines":"54,55"}},{"content":"Scouting process includes diverse perspective-gathering","children":[],"payload":{"tag":"li","lines":"55,56"}},{"content":"Workshop design considers multiple learning approaches","children":[],"payload":{"tag":"li","lines":"56,58"}}],"payload":{"tag":"h3","lines":"52,53"}},{"content":"Building Collaboration Skills","children":[{"content":"Facilitation skills for inclusion","children":[],"payload":{"tag":"li","lines":"59,60"}},{"content":"Collaboration tools training","children":[],"payload":{"tag":"li","lines":"60,61"}},{"content":"Note-taking skills for accessibility","children":[],"payload":{"tag":"li","lines":"61,62"}},{"content":"Async-first practices supporting autonomy","children":[],"payload":{"tag":"li","lines":"62,64"}}],"payload":{"tag":"h3","lines":"58,59"}}],"payload":{"tag":"h2","lines":"50,51"}},{"content":"&#x1f3af; Meet with Purpose","children":[{"content":"How that affects my daily work?","children":[{"content":"Working groups have clear objectives and defined outcomes","children":[],"payload":{"tag":"li","lines":"67,68"}},{"content":"Knowledge sharing workshops are structured for effective learning","children":[],"payload":{"tag":"li","lines":"68,69"}},{"content":"Project scouting sessions are purposeful with defined criteria","children":[],"payload":{"tag":"li","lines":"69,70"}},{"content":"Workshop proposals include clear objectives and expected results","children":[],"payload":{"tag":"li","lines":"70,72"}}],"payload":{"tag":"h3","lines":"66,67"}},{"content":"Building Collaboration Skills","children":[{"content":"Agenda setting skills","children":[],"payload":{"tag":"li","lines":"73,74"}},{"content":"Facilitation skills for structured engagement","children":[],"payload":{"tag":"li","lines":"74,75"}},{"content":"Meeting alternatives exploration","children":[],"payload":{"tag":"li","lines":"75,76"}},{"content":"Purpose-driven gathering design","children":[],"payload":{"tag":"li","lines":"76,77"}}],"payload":{"tag":"h3","lines":"72,73"}}],"payload":{"tag":"h2","lines":"64,65"}}],"payload":{"tag":"h1","lines":"6,7"}},{"colorFreezeLevel":2})</script>
+<div id="container">
+  <div id="center-node">STA</div>
+</div>
+
+<script>
+const collaborationValues = [
+  {
+    id: 'method-mission',
+    title: '📋 Method with Mission',
+    position: 0, // 0 degrees
+    dailyWork: [
+      'Working groups align activities with public benefit',
+      'Knowledge sharing serves broader community needs',
+      'Scouting criteria includes mission alignment',
+      'Workshop content connects to organizational purpose'
+    ],
+    skills: [
+      'Project management for mission alignment',
+      'Keep up! for mission-relevant knowledge',
+      'Self-organization supporting purpose',
+      'Values-driven decision making'
+    ]
+  },
+  {
+    id: 'people-org',
+    title: '🤝 People Organization',
+    position: 60, // 60 degrees
+    dailyWork: [
+      'Working groups facilitate with care for individual needs',
+      '1:1 check-ins build relationships beyond task completion',
+      'Project scouting considers team capacity and wellbeing',
+      'Knowledge sharing workshops create connection opportunities'
+    ],
+    skills: [
+      'Constructive Conflict & Disagreement',
+      'Internal Communication',
+      'People\'s Manual sharing sessions',
+      'Feedback culture development'
+    ]
+  },
+  {
+    id: 'work-open',
+    title: '🌐 Work in the Open',
+    position: 120, // 120 degrees
+    dailyWork: [
+      'Working groups share progress openly with transparent documentation',
+      'Knowledge base serves as shared resource for all',
+      'Scouting decisions made together with clear rationale',
+      'Workshop proposals shared for collective input'
+    ],
+    skills: [
+      'Working in the Open methodology',
+      'General writing for transparency',
+      'Collaboration tools for co-creation',
+      'Note-taking as shared memory'
+    ]
+  },
+  {
+    id: 'think-differently',
+    title: '🧠 Everyone Thinks Differently',
+    position: 180, // 180 degrees
+    dailyWork: [
+      'Working groups accommodate different participation styles',
+      'Knowledge sharing workshops vary formats for different learners',
+      'Scouting process includes diverse perspective-gathering',
+      'Workshop design considers multiple learning approaches'
+    ],
+    skills: [
+      'Facilitation skills for inclusion',
+      'Collaboration tools training',
+      'Note-taking skills for accessibility',
+      'Async-first practices supporting autonomy'
+    ]
+  },
+  {
+    id: 'meet-purpose',
+    title: '🎯 Meet with Purpose',
+    position: 240, // 240 degrees
+    dailyWork: [
+      'Working groups have clear objectives and defined outcomes',
+      'Knowledge sharing workshops are structured for effective learning',
+      'Project scouting sessions are purposeful with defined criteria',
+      'Workshop proposals include clear objectives and expected results'
+    ],
+    skills: [
+      'Agenda setting skills',
+      'Facilitation skills for structured engagement',
+      'Meeting alternatives exploration',
+      'Purpose-driven gathering design'
+    ]
+  },
+  {
+    id: 'collaboration',
+    title: '🤲 Collaboration',
+    position: 300, // 300 degrees
+    dailyWork: [
+      'Cross-functional working groups',
+      'Shared decision-making processes',
+      'Collective knowledge building',
+      'Co-creation of organizational practices'
+    ],
+    skills: [
+      'Cross-team communication',
+      'Shared leadership development',
+      'Collaborative problem-solving',
+      'Building trust across boundaries'
+    ]
+  }
+];
+
+class RadialLayout {
+  constructor() {
+    this.container = document.getElementById('container');
+    this.centerNode = document.getElementById('center-node');
+    this.radius = Math.min(window.innerWidth, window.innerHeight) * 0.25;
+    this.centerX = window.innerWidth / 2;
+    this.centerY = window.innerHeight / 2;
+    this.activeArm = null;
+    
+    this.init();
+  }
+  
+  init() {
+    this.createValueNodes();
+    this.createConnectionLines();
+    this.setupEventListeners();
+    this.centerNode.addEventListener('click', () => this.showCenterDetails());
+  }
+  
+  createValueNodes() {
+    collaborationValues.forEach(value => {
+      const node = document.createElement('div');
+      node.className = 'value-node';
+      node.id = value.id;
+      node.innerHTML = value.title;
+      
+      // Calculate position
+      const angle = (value.position * Math.PI) / 180;
+      const x = this.centerX + this.radius * Math.cos(angle);
+      const y = this.centerY + this.radius * Math.sin(angle);
+      
+      node.style.left = `${x - 100}px`;
+      node.style.top = `${y - 100}px`;
+      
+      node.addEventListener('click', () => this.toggleArm(value));
+      
+      this.container.appendChild(node);
+    });
+  }
+  
+  createConnectionLines() {
+    collaborationValues.forEach(value => {
+      const line = document.createElement('div');
+      line.className = 'connection-line';
+      
+      const angle = (value.position * Math.PI) / 180;
+      const endX = this.centerX + this.radius * Math.cos(angle);
+      const endY = this.centerY + this.radius * Math.sin(angle);
+      
+      const length = Math.sqrt(Math.pow(endX - this.centerX, 2) + Math.pow(endY - this.centerY, 2));
+      const angleDeg = (value.position + 90) % 360;
+      
+      line.style.width = `${length}px`;
+      line.style.left = `${this.centerX}px`;
+      line.style.top = `${this.centerY}px`;
+      line.style.transform = `rotate(${angleDeg}deg)`;
+      
+      this.container.appendChild(line);
+    });
+  }
+  
+  toggleArm(value) {
+    // Remove active class from all nodes
+    document.querySelectorAll('.value-node').forEach(node => {
+      node.classList.remove('active');
+    });
+    
+    // Add active class to clicked node
+    document.getElementById(value.id).classList.add('active');
+    
+    // Close any existing arm
+    if (this.activeArm) {
+      this.closeArm();
+    }
+    
+    // Create and open new arm
+    this.createArm(value);
+  }
+  
+  createArm(value) {
+    const arm = document.createElement('div');
+    arm.className = 'expanding-arm';
+    arm.id = `arm-${value.id}`;
+    
+    // Calculate position for the arm - extend from center outward
+    const angle = (value.position * Math.PI) / 180;
+    const armDistance = this.radius + 100; // Distance from center
+    const armX = this.centerX + armDistance * Math.cos(angle);
+    const armY = this.centerY + armDistance * Math.sin(angle);
+    
+    // Check if we're on mobile and position accordingly
+    const isMobile = window.innerWidth <= 768;
+    
+    if (isMobile) {
+      // On mobile, center the arm
+      arm.style.left = '50%';
+      arm.style.top = '50%';
+      arm.style.transform = 'translate(-50%, -50%)';
+    } else {
+      // On desktop, position relative to the value node
+      arm.style.left = `${armX - 175}px`;
+      arm.style.top = `${armY - 125}px`;
+    }
+    
+    arm.innerHTML = `
+      <div class="arm-content">
+        <div class="arm-header">
+          <div class="arm-title">${value.title}</div>
+          <button class="close-arm" onclick="this.closest('.expanding-arm').remove(); document.getElementById('connection-${value.id}')?.remove(); document.querySelectorAll('.value-node').forEach(n => n.classList.remove('active'));">×</button>
+        </div>
+        
+        <div class="toggle-buttons">
+          <button class="toggle-btn active" data-section="daily-work">How that affects my daily work?</button>
+          <button class="toggle-btn" data-section="skills">Building Collaboration Skills</button>
+        </div>
+        
+        <div class="content-section active" id="daily-work-${value.id}">
+          <h3>How that affects my daily work?</h3>
+          <ul>
+            ${value.dailyWork.map(item => `<li>${item}</li>`).join('')}
+          </ul>
+        </div>
+        
+        <div class="content-section" id="skills-${value.id}">
+          <h3>Building Collaboration Skills</h3>
+          <ul>
+            ${value.skills.map(item => `<li>${item}</li>`).join('')}
+          </ul>
+        </div>
+      </div>
+    `;
+    
+    this.container.appendChild(arm);
+    this.activeArm = arm;
+    
+    // Create connection line from center to arm (only on desktop)
+    if (!isMobile) {
+      const connectionLine = document.createElement('div');
+      connectionLine.className = 'arm-connection';
+      connectionLine.id = `connection-${value.id}`;
+      
+      // Calculate the connection line to go from center to the arm's edge
+      const connectionLength = armDistance - 60; // Length from center to arm edge
+      const connectionAngleDeg = value.position; // Use the same angle as the value node
+      
+      connectionLine.style.width = `${connectionLength}px`;
+      connectionLine.style.left = `${this.centerX}px`;
+      connectionLine.style.top = `${this.centerY}px`;
+      connectionLine.style.transform = `rotate(${connectionAngleDeg}deg)`;
+      
+      this.container.appendChild(connectionLine);
+    }
+    
+    // Add toggle button functionality
+    setTimeout(() => {
+      arm.classList.add('open');
+      
+      const toggleBtns = arm.querySelectorAll('.toggle-btn');
+      toggleBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          // Remove active class from all buttons
+          toggleBtns.forEach(b => b.classList.remove('active'));
+          // Add active class to clicked button
+          btn.classList.add('active');
+          
+          // Hide all content sections
+          arm.querySelectorAll('.content-section').forEach(section => {
+            section.classList.remove('active');
+          });
+          
+          // Show selected content section
+          const sectionId = btn.dataset.section + '-' + value.id;
+          document.getElementById(sectionId).classList.add('active');
+        });
+      });
+    }, 10);
+  }
+  
+  closeArm() {
+    if (this.activeArm) {
+      const armId = this.activeArm.id;
+      const connectionId = `connection-${armId.replace('arm-', '')}`;
+      
+      this.activeArm.remove();
+      const connection = document.getElementById(connectionId);
+      if (connection) connection.remove();
+      
+      this.activeArm = null;
+    }
+  }
+  
+  showCenterDetails() {
+    // Close any existing arm
+    this.closeArm();
+    
+    // Remove active class from all nodes
+    document.querySelectorAll('.value-node').forEach(node => {
+      node.classList.remove('active');
+    });
+    
+    // Create center arm
+    const arm = document.createElement('div');
+    arm.className = 'expanding-arm';
+    arm.id = 'center-arm';
+    
+    arm.style.left = `${this.centerX - 175}px`;
+    arm.style.top = `${this.centerY - 125}px`;
+    
+    arm.innerHTML = `
+      <div class="arm-content">
+        <div class="arm-header">
+          <div class="arm-title">STA - Collaboration Values</div>
+          <button class="close-arm" onclick="this.closest('.expanding-arm').remove();">×</button>
+        </div>
+        
+        <div class="toggle-buttons">
+          <button class="toggle-btn active" data-section="overview">Overview</button>
+          <button class="toggle-btn" data-section="values">All Values</button>
+        </div>
+        
+        <div class="content-section active" id="overview">
+          <h3>Collaboration Values Overview</h3>
+          <p>This interactive visualization shows the core collaboration values that guide our daily work and skill development.</p>
+          <p>Click on any value around the circle to explore:</p>
+          <ul>
+            <li>How each value affects daily work</li>
+            <li>Skills needed to build collaboration</li>
+            <li>Practical applications in the organization</li>
+          </ul>
+        </div>
+        
+        <div class="content-section" id="values">
+          <h3>All Collaboration Values</h3>
+          <ul>
+            ${collaborationValues.map(v => `<li>${v.title}</li>`).join('')}
+          </ul>
+        </div>
+      </div>
+    `;
+    
+    this.container.appendChild(arm);
+    this.activeArm = arm;
+    
+    setTimeout(() => {
+      arm.classList.add('open');
+      
+      const toggleBtns = arm.querySelectorAll('.toggle-btn');
+      toggleBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          toggleBtns.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          
+          arm.querySelectorAll('.content-section').forEach(section => {
+            section.classList.remove('active');
+          });
+          
+          const sectionId = btn.dataset.section;
+          document.getElementById(sectionId).classList.add('active');
+        });
+      });
+    }, 10);
+  }
+  
+  setupEventListeners() {
+    // Handle window resize
+    window.addEventListener('resize', () => {
+      this.radius = Math.min(window.innerWidth, window.innerHeight) * 0.25;
+      this.centerX = window.innerWidth / 2;
+      this.centerY = window.innerHeight / 2;
+      this.updatePositions();
+    });
+  }
+  
+  updatePositions() {
+    collaborationValues.forEach(value => {
+      const node = document.getElementById(value.id);
+      if (node) {
+        const angle = (value.position * Math.PI) / 180;
+        const x = this.centerX + this.radius * Math.cos(angle);
+        const y = this.centerY + this.radius * Math.sin(angle);
+        
+        node.style.left = `${x - 100}px`;
+        node.style.top = `${y - 100}px`;
+      }
+    });
+    
+    // Update connection lines
+    document.querySelectorAll('.connection-line').forEach((line, index) => {
+      const value = collaborationValues[index];
+      const angle = (value.position * Math.PI) / 180;
+      const endX = this.centerX + this.radius * Math.cos(angle);
+      const endY = this.centerY + this.radius * Math.sin(angle);
+      
+      const length = Math.sqrt(Math.pow(endX - this.centerX, 2) + Math.pow(endY - this.centerY, 2));
+      const angleDeg = (value.position + 90) % 360;
+      
+      line.style.width = `${length}px`;
+      line.style.left = `${this.centerX}px`;
+      line.style.top = `${this.centerY}px`;
+      line.style.transform = `rotate(${angleDeg}deg)`;
+    });
+  }
+}
+
+// Initialize the radial layout when the page loads
+document.addEventListener('DOMContentLoaded', () => {
+  new RadialLayout();
+});
+</script>
 </body>
 </html>
