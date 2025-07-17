@@ -156,7 +156,7 @@ class RadialLayout {
         
         <div class="toggle-buttons">
           <button class="toggle-btn active" data-section="daily-work">How that affects my daily work?</button>
-          <button class="toggle-btn" data-section="skills">Building Collaboration Skills</button>
+          <button class="toggle-btn" data-section="skills">How can we build this skill?</button>
         </div>
         
         <div class="content-section active" id="daily-work-${value.id}">
@@ -167,7 +167,7 @@ class RadialLayout {
         </div>
         
         <div class="content-section" id="skills-${value.id}">
-          <h3>Building Collaboration Skills</h3>
+          <h3>How can we build this skill?</h3>
           <ul>
             ${value.skills.map(item => `<li>${item}</li>`).join('')}
           </ul>
