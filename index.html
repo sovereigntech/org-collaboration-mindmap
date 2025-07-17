@@ -66,15 +66,33 @@ class RadialLayout {
       const node = document.createElement('div');
       node.className = 'value-node';
       node.id = value.id;
-      node.innerHTML = value.title;
       
-      // Calculate position
-      const angle = (value.position * Math.PI) / 180;
-      const x = this.centerX + this.radius * Math.cos(angle);
-      const y = this.centerY + this.radius * Math.sin(angle);
+      // Check if we're on mobile
+      const isMobile = window.innerWidth <= 768;
       
-      node.style.left = `${x - 100}px`;
-      node.style.top = `${y - 100}px`;
+      if (isMobile) {
+        // On mobile, add a visual indicator and position as blocks
+        node.innerHTML = `
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <div style="width: 8px; height: 8px; background: linear-gradient(135deg, #667eea, #764ba2); border-radius: 50%; flex-shrink: 0;"></div>
+            <div style="flex: 1;">${value.title}</div>
+            <div style="font-size: 1.2rem; opacity: 0.6;">→</div>
+          </div>
+        `;
+        node.style.position = 'relative';
+        node.style.left = 'auto';
+        node.style.top = 'auto';
+      } else {
+        // On desktop, use simple title
+        node.innerHTML = value.title;
+        // Calculate circular position
+        const angle = (value.position * Math.PI) / 180;
+        const x = this.centerX + this.radius * Math.cos(angle);
+        const y = this.centerY + this.radius * Math.sin(angle);
+        
+        node.style.left = `${x - 100}px`;
+        node.style.top = `${y - 100}px`;
+      }
       
       node.addEventListener('click', () => this.toggleArm(value));
       
@@ -83,6 +101,10 @@ class RadialLayout {
   }
   
   createConnectionLines() {
+    // Only create connection lines on desktop
+    const isMobile = window.innerWidth <= 768;
+    if (isMobile) return;
+    
     collaborationValues.forEach((value, index) => {
       const line = document.createElement('div');
       line.className = 'connection-line';
@@ -127,22 +149,22 @@ class RadialLayout {
     arm.className = 'expanding-arm';
     arm.id = `arm-${value.id}`;
     
-    // Calculate position for the arm - extend from center outward
-    const angle = (value.position * Math.PI) / 180;
-    const armDistance = this.radius + 100; // Distance from center
-    const armX = this.centerX + armDistance * Math.cos(angle);
-    const armY = this.centerY + armDistance * Math.sin(angle);
-    
-    // Check if we're on mobile and position accordingly
+    // Check if we're on mobile
     const isMobile = window.innerWidth <= 768;
     
     if (isMobile) {
-      // On mobile, center the arm
-      arm.style.left = '50%';
-      arm.style.top = '50%';
-      arm.style.transform = 'translate(-50%, -50%)';
+      // On mobile, position as a block in the flow
+      arm.style.position = 'relative';
+      arm.style.left = 'auto';
+      arm.style.top = 'auto';
+      arm.style.transform = 'none';
     } else {
-      // On desktop, position relative to the value node
+      // On desktop, calculate position for the arm - extend from center outward
+      const angle = (value.position * Math.PI) / 180;
+      const armDistance = this.radius + 100; // Distance from center
+      const armX = this.centerX + armDistance * Math.cos(angle);
+      const armY = this.centerY + armDistance * Math.sin(angle);
+      
       arm.style.left = `${armX - 175}px`;
       arm.style.top = `${armY - 125}px`;
     }
@@ -178,7 +200,7 @@ class RadialLayout {
     this.container.appendChild(arm);
     this.activeArm = arm;
     
-    // Highlight the existing connection line instead of creating a new one
+    // Highlight the existing connection line instead of creating a new one (desktop only)
     if (!isMobile) {
       // Remove active class from all connection lines
       document.querySelectorAll('.connection-line').forEach(line => {
@@ -243,8 +265,20 @@ class RadialLayout {
     arm.className = 'expanding-arm';
     arm.id = 'center-arm';
     
-    arm.style.left = `${this.centerX - 175}px`;
-    arm.style.top = `${this.centerY - 125}px`;
+    // Check if we're on mobile
+    const isMobile = window.innerWidth <= 768;
+    
+    if (isMobile) {
+      // On mobile, position as a block in the flow
+      arm.style.position = 'relative';
+      arm.style.left = 'auto';
+      arm.style.top = 'auto';
+      arm.style.transform = 'none';
+    } else {
+      // On desktop, position relative to the center
+      arm.style.left = `${this.centerX - 175}px`;
+      arm.style.top = `${this.centerY - 125}px`;
+    }
     
     const overview = centerContent.overview || {
       title: 'Collaboration Values Overview',
@@ -317,33 +351,45 @@ class RadialLayout {
   }
   
   updatePositions() {
+    const isMobile = window.innerWidth <= 768;
+    
     collaborationValues.forEach(value => {
       const node = document.getElementById(value.id);
       if (node) {
-        const angle = (value.position * Math.PI) / 180;
-        const x = this.centerX + this.radius * Math.cos(angle);
-        const y = this.centerY + this.radius * Math.sin(angle);
-        
-        node.style.left = `${x - 100}px`;
-        node.style.top = `${y - 100}px`;
+        if (isMobile) {
+          // On mobile, keep as blocks in flow
+          node.style.position = 'relative';
+          node.style.left = 'auto';
+          node.style.top = 'auto';
+        } else {
+          // On desktop, calculate circular position
+          const angle = (value.position * Math.PI) / 180;
+          const x = this.centerX + this.radius * Math.cos(angle);
+          const y = this.centerY + this.radius * Math.sin(angle);
+          
+          node.style.left = `${x - 100}px`;
+          node.style.top = `${y - 100}px`;
+        }
       }
     });
     
-    // Update connection lines
-    document.querySelectorAll('.connection-line').forEach((line, index) => {
-      const value = collaborationValues[index];
-      const angle = (value.position * Math.PI) / 180;
-      const endX = this.centerX + this.radius * Math.cos(angle);
-      const endY = this.centerY + this.radius * Math.sin(angle);
-      
-      const length = Math.sqrt(Math.pow(endX - this.centerX, 2) + Math.pow(endY - this.centerY, 2));
-      const angleDeg = value.position; // No rotation offset
-      
-      line.style.width = `${length}px`;
-      line.style.left = `${this.centerX}px`;
-      line.style.top = `${this.centerY}px`;
-      line.style.transform = `rotate(${angleDeg}deg)`;
-    });
+    // Update connection lines (desktop only)
+    if (!isMobile) {
+      document.querySelectorAll('.connection-line').forEach((line, index) => {
+        const value = collaborationValues[index];
+        const angle = (value.position * Math.PI) / 180;
+        const endX = this.centerX + this.radius * Math.cos(angle);
+        const endY = this.centerY + this.radius * Math.sin(angle);
+        
+        const length = Math.sqrt(Math.pow(endX - this.centerX, 2) + Math.pow(endY - this.centerY, 2));
+        const angleDeg = value.position; // No rotation offset
+        
+        line.style.width = `${length}px`;
+        line.style.left = `${this.centerX}px`;
+        line.style.top = `${this.centerY}px`;
+        line.style.transform = `rotate(${angleDeg}deg)`;
+      });
+    }
   }
 }
 

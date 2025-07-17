@@ -245,58 +245,288 @@ html, body {
     padding: 20px;
     max-width: 100vw;
     overflow-x: hidden;
+    display: block;
+    position: relative;
+    background: linear-gradient(180deg, #EBEEFA 0%, #764ba2 100%);
+  }
+  
+  #center-node {
+    position: relative;
+    width: 100%;
+    height: auto;
+    border-radius: 20px;
+    margin-bottom: 25px;
+    padding: 25px;
+    font-size: 1.8rem;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    border: 2px solid rgba(102, 126, 234, 0.3);
+    text-align: center;
+    transition: all 0.3s ease;
+  }
+  
+  #center-node:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 35px rgba(0,0,0,0.2);
+    border-color: rgba(102, 126, 234, 0.5);
   }
   
   .value-node {
-    width: 120px;
-    height: 120px;
-    font-size: 0.8rem;
-    padding: 10px;
+    position: relative;
+    width: 100%;
+    height: auto;
+    border-radius: 18px;
+    margin-bottom: 20px;
+    padding: 22px;
+    font-size: 1.1rem;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+    display: block;
+    text-align: left;
+    line-height: 1.5;
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    border: 1px solid rgba(102, 126, 234, 0.2);
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+  
+  .value-node:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.18);
+    border-color: rgba(102, 126, 234, 0.4);
+    background: linear-gradient(135deg, #ffffff 0%, #e8f4fd 100%);
+  }
+  
+  .value-node.active {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 35px rgba(102, 126, 234, 0.25);
+    background: linear-gradient(135deg, #ffffff 0%, #d4edda 100%);
+    border-color: rgba(102, 126, 234, 0.6);
+  }
+  
+  .connection-line {
+    display: none;
+  }
+  
+  .expanding-arm {
+    position: relative;
+    width: 100%;
+    margin-bottom: 25px;
+    border-radius: 18px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    transform: none;
+    left: 0;
+    top: 0;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(248, 249, 250, 0.98) 100%);
+    border: 2px solid #667eea;
+    backdrop-filter: blur(10px);
   }
   
   .expanding-arm.open {
-    width: calc(100vw - 40px);
+    width: 100%;
     min-height: auto;
     max-height: none;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 20;
-    max-width: calc(100vw - 40px);
+    position: relative;
+    top: auto;
+    left: auto;
+    transform: none;
+    z-index: 5;
+    max-width: 100%;
+    margin-bottom: 25px;
+    animation: slideInUp 0.4s ease-out;
+  }
+  
+  @keyframes slideInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
   
   .arm-content {
-    padding: 15px;
+    padding: 25px;
     max-width: 100%;
     overflow-x: hidden;
   }
   
   .toggle-buttons {
     flex-direction: column;
-    gap: 5px;
+    gap: 10px;
+    margin-bottom: 25px;
   }
   
   .toggle-btn {
-    font-size: 0.8rem;
-    padding: 8px 10px;
+    font-size: 0.95rem;
+    padding: 14px 18px;
+    border-radius: 12px;
+    border: 2px solid #e9ecef;
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    transition: all 0.3s ease;
+  }
+  
+  .toggle-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+  }
+  
+  .toggle-btn.active {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-color: #667eea;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+  }
+  
+  .content-section h3 {
+    font-size: 1.2rem;
+    margin-bottom: 18px;
+    color: #333;
+    font-weight: 600;
+  }
+  
+  .content-section li {
+    font-size: 1rem;
+    margin-bottom: 12px;
+    line-height: 1.6;
+    color: #444;
+    padding-left: 5px;
+  }
+  
+  .content-section ul {
+    margin-left: 20px;
+  }
+  
+  /* Add visual hierarchy with subtle animations */
+  .value-node::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #667eea, #764ba2);
+    border-radius: 18px 18px 0 0;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  
+  .value-node:hover::before,
+  .value-node.active::before {
+    opacity: 1;
+  }
+  
+  /* Add subtle pulse animation for active nodes */
+  @keyframes pulse {
+    0% { box-shadow: 0 12px 35px rgba(102, 126, 234, 0.25); }
+    50% { box-shadow: 0 12px 35px rgba(102, 126, 234, 0.4); }
+    100% { box-shadow: 0 12px 35px rgba(102, 126, 234, 0.25); }
+  }
+  
+  .value-node.active {
+    animation: pulse 2s infinite;
+  }
+  
+  /* Enhanced close button for mobile */
+  .close-arm {
+    background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
+    color: white;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    box-shadow: 0 2px 8px rgba(255, 107, 107, 0.3);
+    transition: all 0.3s ease;
+  }
+  
+  .close-arm:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(255, 107, 107, 0.4);
   }
 }
 
 @media (max-width: 480px) {
+  #center-node {
+    font-size: 1.3rem;
+    padding: 15px;
+    margin-bottom: 15px;
+  }
+  
   .value-node {
-    width: 100px;
-    height: 100px;
-    font-size: 0.7rem;
-    padding: 8px;
+    padding: 15px;
+    font-size: 0.9rem;
+    margin-bottom: 12px;
   }
   
   .expanding-arm.open {
-    width: calc(100vw - 20px);
-    max-width: calc(100vw - 20px);
+    width: 100%;
+    max-width: 100%;
   }
   
   .arm-content {
-    padding: 10px;
+    padding: 15px;
+  }
+  
+  .arm-title {
+    font-size: 0.95rem;
+  }
+  
+  .content-section h3 {
+    font-size: 0.9rem;
+    margin-bottom: 12px;
+  }
+  
+  .content-section li {
+    font-size: 0.85rem;
+    margin-bottom: 8px;
+  }
+  
+  .toggle-btn {
+    font-size: 0.8rem;
+    padding: 10px 12px;
+  }
+}
+
+@media (max-width: 360px) {
+  #center-node {
+    font-size: 1.2rem;
+    padding: 12px;
+    margin-bottom: 12px;
+  }
+  
+  .value-node {
+    padding: 12px;
+    font-size: 0.8rem;
+    margin-bottom: 10px;
+  }
+  
+  .arm-content {
+    padding: 12px;
+  }
+  
+  .arm-title {
+    font-size: 0.9rem;
+  }
+  
+  .content-section h3 {
+    font-size: 0.8rem;
+    margin-bottom: 10px;
+  }
+  
+  .content-section li {
+    font-size: 0.75rem;
+    margin-bottom: 6px;
+  }
+  
+  .toggle-btn {
+    font-size: 0.75rem;
+    padding: 8px 10px;
+  }
+  
+  .close-arm {
+    font-size: 1.1rem;
   }
 } 
