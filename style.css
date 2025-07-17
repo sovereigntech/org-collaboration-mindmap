@@ -10,7 +10,8 @@ html, body {
   background: linear-gradient(135deg, #EBEEFA 0%, #764ba2 100%);
   height: 100vh;
   width: 100vw;
-  overflow: auto;
+  overflow-x: hidden;
+  overflow-y: auto;
   margin: 0;
   padding: 0;
 }
@@ -24,6 +25,7 @@ html, body {
   justify-content: center;
   align-items: center;
   overflow: visible;
+  max-width: 100vw;
 }
 
 #center-node {
@@ -215,6 +217,14 @@ html, body {
   transform-origin: left center;
   pointer-events: none;
   z-index: 1;
+  transition: all 0.3s ease;
+}
+
+.connection-line.active {
+  background: linear-gradient(90deg, #667eea, #764ba2);
+  height: 4px;
+  box-shadow: 0 0 10px rgba(102, 126, 234, 0.5);
+  z-index: 2;
 }
 
 .arm-connection {
@@ -233,6 +243,8 @@ html, body {
     height: auto;
     min-height: 100vh;
     padding: 20px;
+    max-width: 100vw;
+    overflow-x: hidden;
   }
   
   .value-node {
@@ -251,10 +263,13 @@ html, body {
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 20;
+    max-width: calc(100vw - 40px);
   }
   
   .arm-content {
     padding: 15px;
+    max-width: 100%;
+    overflow-x: hidden;
   }
   
   .toggle-buttons {
@@ -278,5 +293,10 @@ html, body {
   
   .expanding-arm.open {
     width: calc(100vw - 20px);
+    max-width: calc(100vw - 20px);
+  }
+  
+  .arm-content {
+    padding: 10px;
   }
 } 

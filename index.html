@@ -83,16 +83,17 @@ class RadialLayout {
   }
   
   createConnectionLines() {
-    collaborationValues.forEach(value => {
+    collaborationValues.forEach((value, index) => {
       const line = document.createElement('div');
       line.className = 'connection-line';
+      line.setAttribute('data-value-id', value.id);
       
       const angle = (value.position * Math.PI) / 180;
       const endX = this.centerX + this.radius * Math.cos(angle);
       const endY = this.centerY + this.radius * Math.sin(angle);
       
       const length = Math.sqrt(Math.pow(endX - this.centerX, 2) + Math.pow(endY - this.centerY, 2));
-      const angleDeg = (value.position + 90) % 360;
+      const angleDeg = value.position; // No rotation offset
       
       line.style.width = `${length}px`;
       line.style.left = `${this.centerX}px`;
@@ -150,7 +151,7 @@ class RadialLayout {
       <div class="arm-content">
         <div class="arm-header">
           <div class="arm-title">${value.title}</div>
-          <button class="close-arm" onclick="this.closest('.expanding-arm').remove(); document.getElementById('connection-' + '${value.id}')?.remove(); document.querySelectorAll('.value-node').forEach(n => n.classList.remove('active'));">×</button>
+          <button class="close-arm" onclick="this.closest('.expanding-arm').remove(); document.querySelectorAll('.connection-line').forEach(line => line.classList.remove('active')); document.querySelectorAll('.value-node').forEach(n => n.classList.remove('active'));">×</button>
         </div>
         
         <div class="toggle-buttons">
@@ -177,22 +178,18 @@ class RadialLayout {
     this.container.appendChild(arm);
     this.activeArm = arm;
     
-    // Create connection line from center to arm (only on desktop)
+    // Highlight the existing connection line instead of creating a new one
     if (!isMobile) {
-      const connectionLine = document.createElement('div');
-      connectionLine.className = 'arm-connection';
-      connectionLine.id = `connection-${value.id}`;
+      // Remove active class from all connection lines
+      document.querySelectorAll('.connection-line').forEach(line => {
+        line.classList.remove('active');
+      });
       
-      // Calculate the connection line to go from center to the arm's edge
-      const connectionLength = armDistance - 60; // Length from center to arm edge
-      const connectionAngleDeg = value.position; // Use the same angle as the value node
-      
-      connectionLine.style.width = `${connectionLength}px`;
-      connectionLine.style.left = `${this.centerX}px`;
-      connectionLine.style.top = `${this.centerY}px`;
-      connectionLine.style.transform = `rotate(${connectionAngleDeg}deg)`;
-      
-      this.container.appendChild(connectionLine);
+      // Find and highlight the connection line for this value using data attribute
+      const targetLine = document.querySelector(`.connection-line[data-value-id="${value.id}"]`);
+      if (targetLine) {
+        targetLine.classList.add('active');
+      }
     }
     
     // Add toggle button functionality
@@ -222,14 +219,13 @@ class RadialLayout {
   
   closeArm() {
     if (this.activeArm) {
-      const armId = this.activeArm.id;
-      const connectionId = `connection-${armId.replace('arm-', '')}`;
-      
       this.activeArm.remove();
-      const connection = document.getElementById(connectionId);
-      if (connection) connection.remove();
-      
       this.activeArm = null;
+      
+      // Remove active class from all connection lines
+      document.querySelectorAll('.connection-line').forEach(line => {
+        line.classList.remove('active');
+      });
     }
   }
   
@@ -341,7 +337,7 @@ class RadialLayout {
       const endY = this.centerY + this.radius * Math.sin(angle);
       
       const length = Math.sqrt(Math.pow(endX - this.centerX, 2) + Math.pow(endY - this.centerY, 2));
-      const angleDeg = (value.position + 90) % 360;
+      const angleDeg = value.position; // No rotation offset
       
       line.style.width = `${length}px`;
       line.style.left = `${this.centerX}px`;
