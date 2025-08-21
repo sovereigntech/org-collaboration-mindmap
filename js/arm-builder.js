@@ -63,7 +63,7 @@ export function buildCenterArm(overview, values) {
   // Create toggle buttons
   const toggleButtons = createElement('div', 'toggle-buttons');
   const overviewBtn = createButton('toggle-btn active', 'Overview', { section: 'overview' });
-  const valuesBtn = createButton('toggle-btn', 'All Values', { section: 'values' });
+  const valuesBtn = createButton('toggle-btn', 'Principles', { section: 'values' });
   
   toggleButtons.appendChild(overviewBtn);
   toggleButtons.appendChild(valuesBtn);
