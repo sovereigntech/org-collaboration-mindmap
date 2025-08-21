@@ -1,4 +1,4 @@
-# Collaboration Values & Daily Work
+# Collaboration Guiding Principles & Daily Work
 
 ## 📋 Method with Mission
 
@@ -12,7 +12,7 @@
 - Project management for mission alignment
 - Keep up! for mission-relevant knowledge
 - Self-organization supporting purpose
-- Values-driven decision making
+- Impact-driven decision making
 
 ## 🤝 People Organization
 
