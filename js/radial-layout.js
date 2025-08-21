@@ -194,7 +194,7 @@ export class RadialLayout {
     }
     
     const overview = centerContent.overview || {
-      title: 'Collaboration Values Overview',
+      title: 'Collaboration Guiding Principles',
       description: 'This interactive visualization shows the core collaboration values.',
       instructions: 'Click on any value around the circle to explore:',
       features: ['How each value affects daily work', 'Skills needed to build collaboration']

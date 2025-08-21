@@ -54,7 +54,7 @@ export function buildCenterArm(overview, values) {
   
   // Create header
   const header = createElement('div', 'arm-header');
-  const title = createElement('div', 'arm-title', 'STA - Collaboration Values');
+  const title = createElement('div', 'arm-title', 'STA - Collaboration Guiding Principles');
   const closeBtn = createElement('button', 'close-arm', '×');
   
   header.appendChild(title);
