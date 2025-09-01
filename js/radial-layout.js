@@ -76,7 +76,10 @@ export class RadialLayout {
       const endY = this.centerY + this.radius * Math.sin(angle);
       
       const length = Math.sqrt(Math.pow(endX - this.centerX, 2) + Math.pow(endY - this.centerY, 2));
-      const angleDeg = value.position; // No rotation offset
+      
+      // Calculate the actual angle from center to the node
+      const actualAngle = Math.atan2(endY - this.centerY, endX - this.centerX) * 180 / Math.PI;
+      const angleDeg = actualAngle;
       
       line.style.width = `${length}px`;
       line.style.left = `${this.centerX}px`;
@@ -282,7 +285,10 @@ export class RadialLayout {
         const endY = this.centerY + this.radius * Math.sin(angle);
         
         const length = Math.sqrt(Math.pow(endX - this.centerX, 2) + Math.pow(endY - this.centerY, 2));
-        const angleDeg = (value.position + 90) % 360;
+        
+        // Calculate the actual angle from center to the node (same as createConnectionLines)
+        const actualAngle = Math.atan2(endY - this.centerY, endX - this.centerX) * 180 / Math.PI;
+        const angleDeg = actualAngle;
         
         line.style.width = `${length}px`;
         line.style.left = `${this.centerX}px`;
