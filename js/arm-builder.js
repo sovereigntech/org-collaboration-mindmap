@@ -71,7 +71,7 @@ export function buildCenterArm(overview, values) {
   
   const overviewTitle = createElement('h3', null, overview.title);
   const overviewDesc = createElement('p', null, overview.description);
-  const overviewInstructions = createElement('p', null, overview.instructions);
+  const overviewInstructions = createElement('p', 'instructions', overview.instructions);
   const overviewList = createList(overview.features);
   
   overviewSection.appendChild(overviewTitle);
