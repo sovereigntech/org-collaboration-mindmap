@@ -86,7 +86,7 @@ html, body {
 
 .expanding-arm {
   position: absolute;
-  background: rgba(255, 255, 255, 0.95);
+  background: rgba(255, 255, 255, 0.8);
   border-radius: 20px;
   box-shadow: 0 8px 32px rgba(0,0,0,0.2);
   backdrop-filter: blur(10px);
@@ -94,7 +94,7 @@ html, body {
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   z-index: 15;
   transform-origin: center;
-  border: 3px solid #667eea;
+  border: 3px solid #764ba2;
 }
 
 .expanding-arm.closed {
@@ -108,6 +108,12 @@ html, body {
   min-height: 250px;
   max-height: none;
   opacity: 1;
+}
+
+.expanding-arm.expanded {
+  width: 500px;
+  min-height: 400px;
+  max-height: 80vh;
 }
 
 .arm-content {
@@ -131,6 +137,19 @@ html, body {
   font-size: 1.2rem;
   font-weight: bold;
   color: #333;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.arm-description {
+  font-size: 1rem;
+  color: #666;
+  line-height: 1.5;
+  margin-bottom: 20px;
+  padding: 15px;
+  background: rgba(118, 75, 162, 0.05);
+  border-radius: 10px;
+  border-left: 4px solid #764ba2;
   word-wrap: break-word;
   overflow-wrap: break-word;
 }
@@ -171,14 +190,14 @@ html, body {
 }
 
 .toggle-btn:hover {
-  border-color: #667eea;
+  border-color: #764ba2;
   background: #f8f9ff;
 }
 
 .toggle-btn.active {
-  background: #667eea;
+  background: #764ba2;
   color: white;
-  border-color: #667eea;
+  border-color: #764ba2;
 }
 
 .content-section {
@@ -349,8 +368,8 @@ html, body {
     transform: none;
     left: 0;
     top: 0;
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(248, 249, 250, 0.98) 100%);
-    border: 2px solid #667eea;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.8) 0%, rgba(248, 249, 250, 0.8) 100%);
+    border: 2px solid #764ba2;
     backdrop-filter: blur(10px);
     overflow: hidden;
   }
@@ -402,6 +421,12 @@ html, body {
     width: 100%;
   }
   
+  .arm-description {
+    font-size: 0.9rem;
+    padding: 12px;
+    margin-bottom: 15px;
+  }
+  
   .toggle-buttons {
     flex-direction: column;
     gap: 6px;
@@ -430,9 +455,9 @@ html, body {
   }
   
   .toggle-btn.active {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    border-color: #667eea;
-    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    background: linear-gradient(135deg, #764ba2 0%, #5a3d7a 100%);
+    border-color: #764ba2;
+    box-shadow: 0 4px 15px rgba(118, 75, 162, 0.3);
   }
   
   .content-section h3 {

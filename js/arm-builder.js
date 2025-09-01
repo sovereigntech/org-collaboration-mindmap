@@ -12,37 +12,34 @@ export function buildValueArm(value) {
   header.appendChild(title);
   header.appendChild(closeBtn);
   
+  // Create description
+  const description = createElement('div', 'arm-description', value.description);
+  
   // Create toggle buttons
   const toggleButtons = createElement('div', 'toggle-buttons');
-  const dailyWorkBtn = createButton('toggle-btn active', 'How that affects my daily work?', { section: 'daily-work' });
+  const dailyWorkBtn = createButton('toggle-btn', 'How that affects my daily work?', { section: 'daily-work' });
   const skillsBtn = createButton('toggle-btn', 'How can we build this skill?', { section: 'skills' });
   
   toggleButtons.appendChild(dailyWorkBtn);
   toggleButtons.appendChild(skillsBtn);
   
-  // Create content sections
-  const dailyWorkSection = createElement('div', 'content-section active', null);
+  // Create content sections (initially hidden)
+  const dailyWorkSection = createElement('div', 'content-section', null);
   dailyWorkSection.id = `daily-work-${value.id}`;
   
-  const dailyWorkTitle = createElement('h3', null, 'How that affects my daily work?');
   const dailyWorkList = createList(value.dailyWork);
-  
-  dailyWorkSection.appendChild(dailyWorkTitle);
   dailyWorkSection.appendChild(dailyWorkList);
   
   const skillsSection = createElement('div', 'content-section', null);
   skillsSection.id = `skills-${value.id}`;
   
-  const skillsTitle = createElement('h3', null, 'How can we build this skill?');
   const skillsList = createList(value.skills);
-  
-  skillsSection.appendChild(skillsTitle);
   skillsSection.appendChild(skillsList);
   
   // Assemble the arm
   armContent.appendChild(header);
+  armContent.appendChild(description);
   armContent.appendChild(toggleButtons);
-  armContent.appendChild(dailyWorkSection);
   armContent.appendChild(dailyWorkSection);
   armContent.appendChild(skillsSection);
   

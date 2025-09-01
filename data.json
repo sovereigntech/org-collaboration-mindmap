@@ -1,10 +1,11 @@
 {
-  "title": "🎯 We align method with mission",
+  "title": "🎯 We align method with mission and impact",
   "centerNode": "STA",
   "values": [
     {
       "id": "method-mission",
-      "title": "🎯 We align method with mission",
+      "title": "🎯 We align method with mission and impact",
+      "description": "We ensure that every project, meeting, and initiative directly contributes to our organizational mission and creates meaningful impact in the community.",
       "position": 0,
       "dailyWork": [
         "Working groups align activities with public benefit",
@@ -22,6 +23,7 @@
     {
       "id": "people-org",
       "title": "👯‍♂️ We are a people organization",
+      "description": "We prioritize the wellbeing, growth, and authentic relationships of our team members, recognizing that our people are our greatest asset.",
       "position": 72,
       "dailyWork": [
         "Working groups facilitate with care for individual needs",
@@ -39,6 +41,7 @@
     {
       "id": "work-open",
       "title": "🌐 We work in the open",
+      "description": "We embrace transparency and open collaboration, sharing our processes, decisions, and knowledge with the broader community.",
       "position": 144,
       "dailyWork": [
         "Working groups share progress openly with transparent documentation",
@@ -55,6 +58,7 @@
     {
       "id": "think-differently",
       "title": "🧠 Every person thinks, communicates, and contributes differently",
+      "description": "We celebrate and accommodate diverse thinking styles, communication preferences, and contribution methods to create an inclusive environment.",
       "position": 216,
       "dailyWork": [
         "Working groups accommodate different participation styles",
@@ -72,6 +76,7 @@
     {
       "id": "meet-purpose",
       "title": "🎯 We meet with purpose",
+      "description": "We design every gathering, meeting, and interaction with clear objectives and meaningful outcomes, ensuring our time together is valuable and productive.",
       "position": 288,
       "dailyWork": [
         "Working groups have clear objectives and defined outcomes",

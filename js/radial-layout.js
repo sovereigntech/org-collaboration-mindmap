@@ -239,6 +239,8 @@ export class RadialLayout {
         const targetSection = document.getElementById(sectionId);
         if (targetSection) {
           addActiveClass(targetSection);
+          // Expand the modal when content is shown
+          arm.classList.add('expanded');
         }
       });
     });
