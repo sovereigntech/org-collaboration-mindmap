@@ -164,8 +164,9 @@ export class RadialLayout {
       this.activeArm.remove();
       this.activeArm = null;
       
-      // Remove active class from all connection lines
+      // Remove active class from all connection lines and value nodes
       removeActiveClass('.connection-line');
+      removeActiveClass('.value-node');
     }
   }
   
@@ -250,6 +251,15 @@ export class RadialLayout {
       this.centerX = window.innerWidth / 2;
       this.centerY = window.innerHeight / 2;
       this.updatePositions();
+    });
+    
+    // Handle click outside modal to close
+    document.addEventListener('click', (event) => {
+      if (this.activeArm && !this.activeArm.contains(event.target) && 
+          !event.target.closest('.value-node') && 
+          !event.target.closest('#center-node')) {
+        this.closeArm();
+      }
     });
   }
   
