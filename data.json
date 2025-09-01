@@ -122,6 +122,19 @@
         "Skills to strengthen collaborative practice",
         "Practical applications for teams and projects"
       ]
+    },
+    "collaboration": {
+      "title": "🤝 Join the Collaboration!",
+      "description": "Help us improve this mindmap by sharing your own examples and experiences.",
+      "callToAction": "We invite you to contribute your own examples of daily work and suggest improvements by sending a pull request to our repository.",
+      "repository": "https://github.com/sovereigntech/org-collaboration-mindmap",
+      "contributionIdeas": [
+        "Add your own daily work examples",
+        "Suggest new collaboration values",
+        "Improve existing descriptions",
+        "Share skills that have worked for you",
+        "Report bugs or suggest features"
+      ]
     }
   }
 } 

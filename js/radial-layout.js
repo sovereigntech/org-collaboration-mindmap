@@ -205,7 +205,7 @@ export class RadialLayout {
     };
     
     // Build center arm content using the arm builder module
-    const { armContent, closeBtn, toggleButtons } = buildCenterArm(overview, collaborationValues);
+    const { armContent, closeBtn, toggleButtons } = buildCenterArm(overview, collaborationValues, centerContent.collaboration);
     
     // Add event listeners
     closeBtn.addEventListener('click', () => this.closeArm());

@@ -46,7 +46,7 @@ export function buildValueArm(value) {
   return { armContent, closeBtn, toggleButtons };
 }
 
-export function buildCenterArm(overview, values) {
+export function buildCenterArm(overview, values, collaboration) {
   const armContent = createElement('div', 'arm-content');
   
   // Create header
@@ -61,9 +61,11 @@ export function buildCenterArm(overview, values) {
   const toggleButtons = createElement('div', 'toggle-buttons');
   const overviewBtn = createButton('toggle-btn active', 'Overview', { section: 'overview' });
   const valuesBtn = createButton('toggle-btn', 'Principles', { section: 'values' });
+  const collaborationBtn = createButton('toggle-btn', 'Contribute', { section: 'collaboration' });
   
   toggleButtons.appendChild(overviewBtn);
   toggleButtons.appendChild(valuesBtn);
+  toggleButtons.appendChild(collaborationBtn);
   
   // Create overview section
   const overviewSection = createElement('div', 'content-section active', null);
@@ -89,11 +91,36 @@ export function buildCenterArm(overview, values) {
   valuesSection.appendChild(valuesTitle);
   valuesSection.appendChild(valuesList);
   
+  // Create collaboration section
+  const collaborationSection = createElement('div', 'content-section', null);
+  collaborationSection.id = 'collaboration';
+  
+  const collaborationTitle = createElement('h3', null, collaboration.title);
+  const collaborationDesc = createElement('p', null, collaboration.description);
+  const collaborationCall = createElement('p', null, collaboration.callToAction);
+  
+  // Create repository link
+  const repoLink = createElement('a', 'repo-link', 'View Repository on GitHub');
+  repoLink.href = collaboration.repository;
+  repoLink.target = '_blank';
+  repoLink.rel = 'noopener noreferrer';
+  
+  const contributionTitle = createElement('h4', null, 'Ways to contribute:');
+  const contributionList = createList(collaboration.contributionIdeas);
+  
+  collaborationSection.appendChild(collaborationTitle);
+  collaborationSection.appendChild(collaborationDesc);
+  collaborationSection.appendChild(collaborationCall);
+  collaborationSection.appendChild(repoLink);
+  collaborationSection.appendChild(contributionTitle);
+  collaborationSection.appendChild(contributionList);
+  
   // Assemble the arm
   armContent.appendChild(header);
   armContent.appendChild(toggleButtons);
   armContent.appendChild(overviewSection);
   armContent.appendChild(valuesSection);
+  armContent.appendChild(collaborationSection);
   
   return { armContent, closeBtn, toggleButtons };
 } 
