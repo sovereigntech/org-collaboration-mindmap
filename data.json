@@ -5,87 +5,106 @@
     {
       "id": "method-mission",
       "title": "🎯 We align method with mission and impact",
-      "description": "We ensure that every project, meeting, and initiative directly contributes to our organizational mission and creates meaningful impact in the community.",
+      "description": "Method and mission move together. Each approach we take strengthens our values and amplifies our impact for the common good.",
       "position": 0,
       "dailyWork": [
-        "Working groups align activities with public benefit",
-        "Knowledge sharing serves broader community needs",
-        "Scouting criteria includes mission alignment",
-        "Workshop content connects to organizational purpose"
+        "Design working groups with clear links to public benefit",
+        "Share knowledge in ways that address real community needs",
+        "Share knowledge so it remains accessible and reusable beyond our team",
+        "Use mission alignment as a filter when scouting projects",
+        "Design workshops that strengthen collective capacity and public benefit"
       ],
       "skills": [
-        "Project management for mission alignment",
-        "Keep up! for mission-relevant knowledge",
-        "Self-organization supporting purpose",
-        "Impact-driven decision making"
+        "Project management that integrates mission priorities",
+        "Research and knowledge updates tied to our impact areas",
+        "Monitoring and curating knowledge relevant to societal needs",
+        "Self-organization practices that keep purpose visible",
+        "Self-organization practices that make work transparent and accountable",
+        "Decision-making based on evidence of community impact and infrastructure value"
       ]
     },
     {
       "id": "people-org",
       "title": "👯‍♂️ We are a people organization",
-      "description": "We prioritize the wellbeing, growth, and authentic relationships of our team members, recognizing that our people are our greatest asset.",
+      "description": "We prioritize the wellbeing, growth, and authentic relationships of our team members, recognizing that people are our greatest asset. This means fostering trust, practicing care in daily work, and creating inclusive spaces where everyone can contribute and thrive—because the strength of our organization is measured by the people who sustain it.",
       "position": 72,
       "dailyWork": [
-        "Working groups facilitate with care for individual needs",
-        "1:1 check-ins build relationships beyond task completion",
-        "Project scouting considers team capacity and wellbeing",
-        "Knowledge sharing workshops create connection opportunities"
+        "Facilitate meetings with attention to individual needs and participation",
+        "Hold regular 1:1 check-ins that strengthen relationships beyond tasks and personal growth",
+        "Assess project opportunities against team capacity and wellbeing",
+        "Use workshops to connect people and share knowledge, not only deliver content", 
+        "Care is also a method: notice signs of burnout, absence, or disengagement and check in.",
+        "Normalize generous, constructive feedback that’s oriented toward learning, not blame."
       ],
       "skills": [
-        "Constructive Conflict & Disagreement",
-        "Internal Communication",
-        "People's Manual sharing sessions",
-        "Feedback culture development"
+        "Constructive conflict & disagreement",
+        "Inclusive and transparent communication practices",
+        "People's manual sharing sessions",
+        "Feedback culture development",
+        "Conscious practices that support psychological safety and growth",
+        "Mentoring for growth and development"
       ]
     },
     {
       "id": "work-open",
       "title": "🌐 We work in the open",
-      "description": "We embrace transparency and open collaboration, sharing our processes, decisions, and knowledge with the broader community.",
+      "description": "Open is an invitation to collaboration, autonomy, and ownership. Transparency builds trust and accountability, while documenting our work makes it accessible, inclusive, and sustainable. Inspired by open source best practices: well-structured governance, working groups, and open communication channels to balance ownership and autonomy. Working in the open means individual growth committed to collective needs.",
       "position": 144,
       "dailyWork": [
         "Working groups share progress openly with transparent documentation",
         "Knowledge base (in progress) serves as shared resource for all",
         "Scouting decisions made together",
-        "Workshop proposals shared for collective input"
+        "Circulate workshop proposals openly for feedback and refinement",
+        "Practice governance through defined roles and responsibilities, while allowing space for autonomy", 
+        "Encourage ownership of initiatives, balancing individual interests with collective priorities"
       ],
       "skills": [
-        "Working in the open: using open source methodology for all sort of jobs",
-        "Note-taking as a shared memory: Strategies for real-time and async documentation. Notes as a shared memory and act of inclusion",
-        "General writing: Clear, inclusive writing for internal and external audiences"
+        "Working in the open: using open source methodology and best practices for all sort of jobs",
+        "Collaborative note-taking: creating shared memory for real-time and async work",
+        "Clear, inclusive writing for both internal audiences and the wider community",
+        "Choosing open vs. closed channels intentionally to balance collaboration and privacy",
+        "Developing skills for distributed ownership, autonomy, and self-driven growth within collective goals",
+        "Navigating the strengths and challenges of open collaboration, turning tensions into learning opportunities"
       ]
     },
     {
       "id": "think-differently",
       "title": "🧠 Every person thinks, communicates, and contributes differently",
-      "description": "We celebrate and accommodate diverse thinking styles, communication preferences, and contribution methods to create an inclusive environment.",
+      "description": "We celebrate and accommodate diverse thinking styles, communication preferences, and contribution methods to create an inclusive environment. This means sharing how we each work best, making expectations explicit, respecting focus time, and designing with neurodiversity in mind so everyone can contribute fully.",
       "position": 216,
       "dailyWork": [
+        "Use people’s manuals to share individual work rhythms, preferences, and needs",
+        "Define and agree on expectations at the start of collaborations",
+        "Respect and protect focus times for deep work, individually and collectively",
+        "Design workshops and meetings with varied formats to support different learning and participation styles",
         "Working groups accommodate different participation styles",
-        "Knowledge sharing workshops vary formats for different learners",
-        "Scouting process includes diverse perspective-gathering",
         "Workshop design considers multiple learning approaches"
       ],
       "skills": [
+        "Facilitation techniques that include multiple voices and styles",
+        "Awareness and inclusion of neurodiverse ways of thinking and working",
         "Facilitation skills for inclusion",
         "Collaboration tools training",
-        "Note-taking skills for accessibility",
+        "Note-taking and documentation skills for accessibility",
         "Async-first practices supporting autonomy"
       ]
     },
     {
       "id": "meet-purpose",
       "title": "🎯 We meet with purpose",
-      "description": "We design every gathering, meeting, and interaction with clear objectives and meaningful outcomes, ensuring our time together is valuable and productive.",
+      "description": "We design every gathering, meeting, and interaction with clear objectives and meaningful outcomes, ensuring our time together is valuable and productive. Purposeful convening also means questioning whether a meeting is needed at all, choosing async or co-working when more effective, and sharing facilitation and documentation roles so responsibility and voices are distributed equitably.",
       "position": 288,
       "dailyWork": [
-        "Working groups have clear objectives and defined outcomes",
-        "Knowledge sharing workshops are structured for effective learning",
-        "Project scouting sessions are purposeful with defined criteria",
+        "Empower team members to call meetings only when synchronous discussion is necessary",
+        "Offer async check-ins, shared notes, or co-working as alternatives to traditional meetings",
+        "Rotate facilitation and documentation roles to build equity and shared ownership",
+        "Ensure every working group, workshop, or scouting session has clear objectives and outcomes",
         "Workshop proposals include clear objectives and expected results"
       ],
       "skills": [
-        "Agenda setting skills",
+        "Agenda-setting and time management",
+        "Experimenting with async-first collaboration methods",
+        "Shared documentation practices as collective memory",
         "Facilitation skills for structured engagement",
         "Meeting alternatives exploration",
         "Purpose-driven gathering design"
@@ -95,12 +114,13 @@
   "centerContent": {
     "overview": {
       "title": "Collaboration Guiding Principles",
-      "description": "This interactive visualization shows the core collaboration values that guide our daily work and skill development.",
+      "description": "This interactive visualization brings together the core values that shape how we collaborate. It highlights how purpose, openness, care, and inclusion connect across our daily work and guide the skills we practice.",
       "instructions": "Click on any value around the circle to explore:",
       "features": [
-        "How each value affects daily work",
-        "Skills needed to build collaboration",
-        "Practical applications in the organization"
+        "How each principle connects method with mission",
+        "Ways each value shapes daily work",
+        "Skills to strengthen collaborative practice",
+        "Practical applications for teams and projects"
       ]
     }
   }
